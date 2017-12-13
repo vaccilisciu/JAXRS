@@ -10,7 +10,7 @@ import java.util.HashMap;
  */
 public class Singleton {
 
-	private HashMap<String, Risorsa> collectionRisorse = new HashMap<>();
+	private HashMap<String, Risorsa> collectionRisorse = new HashMap<String, Risorsa>();
 	private static Singleton mySingleton;
 	private int keyCollectionRisorse = 0;
 

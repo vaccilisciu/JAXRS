@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import scai.formazione.jaxrs.resteasy.data.Risorsa;
 import scai.formazione.jaxrs.resteasy.data.doa.DOA;
 import scai.formazione.jaxrs.resteasy.data.doa.DOAImpl;
+import scai.formazione.jaxrs.resteasy.json.JSONConverter;
 
 /**
  * Classe di implementazione del mio web service
@@ -22,6 +24,7 @@ import scai.formazione.jaxrs.resteasy.data.doa.DOAImpl;
 public class WebService {
 
 	private DOA dataAccessRisorse = new DOAImpl();
+	private JSONConverter jsonConverter = new JSONConverter();
 
 	/**
 	 * Restituisce la risorsa richiesta nella query string
@@ -32,9 +35,11 @@ public class WebService {
 	 */
 	@GET
 	@Path("/read/resource")
-	public Response leggiRisorsa(@QueryParam("ID") String idRisorsa) {
+	@Produces("application/json")
+	public Response leggiRisorsa(@QueryParam("ID") String idRisorsa) throws Exception {
 		Risorsa risorsa = dataAccessRisorse.leggiRisorsa(idRisorsa);
-		return Response.status(200).entity(risorsa.toString()).build();
+		String jsonRisorsa = jsonConverter.risorsaToJSON(risorsa);
+		return Response.status(200).entity(jsonRisorsa).build();
 	}
 
 	/**
@@ -44,12 +49,14 @@ public class WebService {
 	 */
 	@GET
 	@Path("/read")
-	public Response leggiTutteRisorse() {
+	@Produces("application/json")
+	public Response leggiTutteRisorse() throws Exception {
 		ArrayList<Risorsa> listRisorse = null;
 		listRisorse = dataAccessRisorse.leggiTutteRisorse();
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Risorsa itRisorsa : listRisorse) {
-			stringBuilder.append(itRisorsa.toString());
+			stringBuilder.append(jsonConverter.risorsaToJSON(itRisorsa));
+			stringBuilder.append("\n");
 		}
 		return Response.status(200).entity(stringBuilder.toString()).build();
 	}

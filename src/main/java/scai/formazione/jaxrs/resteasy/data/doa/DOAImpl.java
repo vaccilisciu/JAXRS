@@ -41,7 +41,7 @@ public class DOAImpl implements DOA {
 	 */
 	public ArrayList<Risorsa> leggiTutteRisorse() {
 		Risorsa risorsa;
-		ArrayList<Risorsa> listRisorse = new ArrayList<>();
+		ArrayList<Risorsa> listRisorse = new ArrayList<Risorsa>();
 		for (String idRisorsa : mySingleton.accessoCollectionRisorse().keySet()) {
 			risorsa = mySingleton.accessoCollectionRisorse().get(String.valueOf(idRisorsa));
 			listRisorse.add(risorsa);
